@@ -7,11 +7,16 @@ module.exports = [
   {
     name: "0002",
     amount: 7.51,
-    date: new Date("December 12, 2019 16:33:00")
+    date: new Date("September 28, 2019 12:54:20")
   },
   {
     name: "0003",
     amount: 15.4,
     date: new Date("September 30, 2019 01:54:00")
+  },
+  {
+    name: "0004",
+    amount: 30.445786,
+    date: new Date("December 12, 2019 16:33:00")
   }
 ];
