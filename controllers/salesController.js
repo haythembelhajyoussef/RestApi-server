@@ -3,14 +3,17 @@ const queries = require("../db/queries");
 const xlsx = require("xlsx");
 
 const getSales = (req, res) => {
-  queries.getSales().then(sales => {
-    res.json({ data: { sales } });
+  const page = req.query.page || 1;
+  const perPage = req.query.perPage || 2;
+
+  queries.getSalesPagination(page, perPage).then(sales => {
+    res.send(sales);
   });
 };
 
 const getSalesTotal = (req, res) => {
   queries.getSalesTotal().then(totalsales => {
-    res.json({ data: { getSalesTotal: totalsales[0] } });
+    res.send(totalsales[0]);
   });
 };
 
@@ -19,7 +22,7 @@ const exportsales = (req, res) => {
     .getSales()
     .orderBy("date") //ordered by date ASC
     .then(sales => {
-      const fileName = "xlsx/sales.xlsx";
+      const filePath = req.body.filePath;
       const workBook = xlsx.utils.book_new();
       workBook.Props = {
         Title: "Sales list",
@@ -66,8 +69,8 @@ const exportsales = (req, res) => {
       );
       workBook.Sheets["Sales ascending"] = workSheet;
       workBook.Sheets["Sales descending"] = workSheetDesc;
-      xlsx.writeFile(workBook, fileName);
-      res.json({ data: { exportSales: { filePath: fileName } } });
+      xlsx.writeFile(workBook, filePath);
+      res.json({ filePath: filePath });
     });
 };
 
